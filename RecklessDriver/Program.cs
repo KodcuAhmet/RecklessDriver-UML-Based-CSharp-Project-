@@ -4,9 +4,7 @@
     {
         static void Main(string[] args)
         {
-            GameObject go = new GameObject();
-            go.Enabled = true;
-            bool e = go.Enabled;
+            GameManager.Instance.NewGame();
         }
     }
 }

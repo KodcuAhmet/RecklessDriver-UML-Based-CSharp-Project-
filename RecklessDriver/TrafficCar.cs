@@ -19,7 +19,30 @@
 
         public override void OnCollision(GameObject other)
         {
-            base.OnCollision(other);
+            if (other.Name == "Player")
+            {
+                Player player = other as Player;
+                Console.WriteLine("#### COLLISION -> [Sedan] Soarks flying");
+                player.ApplyDamage(Damage, Cash);
+            }
+        }
+    }
+
+    class Van : TrafficCar
+    {
+        public Van(int damage, int cash) : base(damage, cash)
+        {
+            Name = "Van";
+        }
+
+        public override void OnCollision(GameObject other)
+        {
+            if (other.Name == "Player")
+            {
+                Player player = other as Player;
+                Console.WriteLine("#### COLLISION -> [Van] Milk bottles falling");
+                player.ApplyDamage(Damage, Cash);
+            }
         }
     }
 }
