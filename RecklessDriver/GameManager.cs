@@ -27,7 +27,7 @@ namespace RecklessDriver
 
             // Create a player object
             Player player = new Player(100, vehicle);
-            player.Name = "Player";
+            player.Tag = "Player";
 
             // Prepare the scenary
             Scene scene = new Scene();
@@ -36,28 +36,16 @@ namespace RecklessDriver
             // Run a loop
             while (player.IsAlive)
             {
+                Console.Clear();
                 // Generate GameObjects (sideobjects, traffic etc)
-                scene.GenerateNPCs();
+                scene.Execute();
                 // Player is driving
-                Drive();
-
-                // Collide with other objects
-                scene.Collide();
+                player.Drive();
 
                 // Repeat until health is 0
 
             }
             EndGame();
-        }
-        private void Drive()
-        {
-            Console.WriteLine("\nPlayer is driving");
-            for (int i = 0; i < 10; i++)
-            {
-                Thread.Sleep(300);
-                Console.Write(".");
-            }
-            Console.WriteLine("");
         }
 
         // Game continues until health is 0 or player ends the game

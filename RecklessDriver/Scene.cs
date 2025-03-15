@@ -5,8 +5,8 @@
         private const int NPC_TYPES = 2;
         private const int SIDEOBJECT_COUNT = 2;
         private const int TRAFFIC_COUNT = 2;
-        private List<SideObject> sideList = new List<SideObject>();
-        private List<TrafficCar> trafficList = new List<TrafficCar>();
+        private Queue<SideObject> sideList = new Queue<SideObject>();
+        private Queue<Vehicle> trafficList = new Queue<Vehicle>();
         private Player player;
         private Random random = new Random();
 
@@ -15,12 +15,13 @@
             this.player = player;
         }
 
-        public void GenerateNPCs()
+        public void Execute()
         {
-            sideList.Add(GenerateSideObjects());
-            trafficList.Add(GenerateTraffic());
+            GenerateSideObjects();
+            GenerateTraffic();
             DisplaySideObjects();
             DisplayTraffic();
+            Collide();
         }
 
         public void Collide()
@@ -32,46 +33,58 @@
             switch (random.Next(NPC_TYPES))
             {
                 case 0: // SideObjects
-                    go = sideList[random.Next(sideList.Count)];
+                    go = sideList.ElementAt(random.Next(sideList.Count));
                     break;
                 case 1: // Traffic
-                    go = sideList[random.Next(sideList.Count)];
+                    go = trafficList.ElementAt(random.Next(trafficList.Count));
                     break;
             }
 
             if (go != null)
             {
                 go.OnCollision(player);
-                Thread.Sleep(1000);
             }
+            Thread.Sleep(1000);
         }
 
-        private SideObject GenerateSideObjects()
+        private void GenerateSideObjects()
         {
+            if (sideList.Count > 6)
+            {
+                sideList.Dequeue(); // Removing the oldest object
+            }
+
+            SideObject sideObject = null;
             switch (random.Next(SIDEOBJECT_COUNT))
             {
                 case 0: // FireHydrant
-                    return new FireHydrant(5, 10);
+                    sideObject = new FireHydrant(5, 10);
+                    break;
                 case 1: // LetterBox
-                    return new LetterBox(8, 13);
-                default:
+                    sideObject = new LetterBox(8, 13);
                     break;
             }
-            return null;
+            sideList.Enqueue(sideObject);
         }
 
-        private TrafficCar GenerateTraffic()
+        private void GenerateTraffic()
         {
+            if (trafficList.Count > 6)
+            {
+                trafficList.Dequeue(); // Removing the oldest object
+            }
+
+            Vehicle vehicle = null;
             switch (random.Next(TRAFFIC_COUNT))
             {
                 case 0: // Sedan
-                    return new Sedan(15, 80);
+                    vehicle = new Sedan(15, 80);
+                    break;
                 case 1: // Van
-                    return new Van(18, 90);
-                default:
+                    vehicle = new Van(18, 90);
                     break;
             }
-            return null;
+            trafficList.Enqueue(vehicle);
         }
 
         public void DisplaySideObjects()

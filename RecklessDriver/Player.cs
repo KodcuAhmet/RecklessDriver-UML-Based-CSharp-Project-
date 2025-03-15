@@ -1,4 +1,6 @@
-﻿namespace RecklessDriver
+﻿using System;
+
+namespace RecklessDriver
 {
     class Player : GameObject
     {
@@ -8,7 +10,6 @@
         {
             Health = health;
             Vehicle = vehicle;
-            Name = "Player";
         }
 
         public bool IsAlive
@@ -22,9 +23,20 @@
         public void ApplyDamage(int damage, int cash)
         {
             Health -= damage - Vehicle.Strength;
-            Console.WriteLine("Player health:{0}", Health);
             GameManager.Instance.AddCash(cash);
         }
+
+        public void Drive()
+        {
+            Console.WriteLine("\nPlayer is driving [Health={0}]", Health < 0 ? 0 : Health);
+            for (int i = 0; i < 10; i++)
+            {
+                Thread.Sleep(300);
+                Console.Write(".");
+            }
+            Console.WriteLine("");
+        }
+
         public void Accelerate()
         {
             Vehicle.Up();

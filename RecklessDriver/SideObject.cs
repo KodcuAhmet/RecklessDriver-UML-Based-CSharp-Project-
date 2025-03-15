@@ -20,7 +20,7 @@
 
         public override void OnCollision(GameObject other)
         {
-            if (other.Name == "Player")
+            if (other.Tag == "Player")
             {
                 Player player = other as Player;
                 if (Count == 0)
@@ -45,7 +45,7 @@
 
         public override void OnCollision(GameObject other)
         {
-            if (other.Name == "Player")
+            if (other.Tag == "Player")
             {
                 Player player = other as Player;
                 if (Count == 0)
